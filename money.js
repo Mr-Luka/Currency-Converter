@@ -58,14 +58,3 @@ function generateOptions(options) {
     }).join("")
 }
 
-async function fetchRates(base= "USD"){
-    const res = await fetch(`${endpoint}?base=${base}`);
-    const rates = await res.json();
-    console.log(rates)
-
-}
-
-const optionsHTML = generateOptions(currencies);
-// Populate the options elements
-fromSelect.innerHTML = optionsHTML;
-toSelect.innerHTML= optionsHTML;
