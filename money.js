@@ -1,18 +1,8 @@
 const fromSelect = document.querySelector('[name="from_currency"]');
 const toSelect = document.querySelector('[name="to_currency"]');
-const endpoint = `https://api.exchangeratesapi.io/latest`;
+const endpoint = `https://open.er-api.com/v6/latest`;
+const ratesByBase = {};
 
-const myHeaders = new Headers();
-myHeaders.append("apikey", "yourapikey");
-const requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
-  headers: myHeaders
-};
-fetch(`https://api.apilayer.com/exchangerates_data/latest?symbols={symbols}&base={base}`, requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
 
 const currencies = {
   USD: 'United States Dollar',
@@ -61,8 +51,25 @@ function generateOptions(options) {
 async function fetchRates(base= "USD"){
     const res = await fetch(`${endpoint}?base=${base}`);
     const rates = await res.json();
-    console.log(rates)
+    return rates;
 
+}
+
+
+async function convert(amount, from, to) {
+    // Frist check if we even have the rates to convert from that currency
+    if (!ratesByBase[from]) {
+        console.log(`Oh no, we dont have ${from} to convert to ${to}. So lets go get it!`);
+        const rates = await fetchRates(from);
+        console.log(rates);
+        // Store them for next time
+        ratesByBase[from] = rates;
+    }
+    // convert that amount that they passed it
+    const rate = ratesByBase[from].rates[to];
+    const convertedAmount = rate * amount;
+    console.log(`${amount} ${from} is ${convertedAmount} in ${to}`);
+    return convertedAmount;
 }
 
 const optionsHTML = generateOptions(currencies);
