@@ -58,3 +58,9 @@ function generateOptions(options) {
     }).join("")
 }
 
+async function fetchRates(base= "USD"){
+    const res = await fetch(`${endpoint}?base=${base}`);
+    const rates = await res.json();
+    console.log(rates)
+
+}
