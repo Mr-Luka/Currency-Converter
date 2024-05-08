@@ -64,3 +64,8 @@ async function fetchRates(base= "USD"){
     console.log(rates)
 
 }
+
+const optionsHTML = generateOptions(currencies);
+// Populate the options elements
+fromSelect.innerHTML = optionsHTML;
+toSelect.innerHTML= optionsHTML;
