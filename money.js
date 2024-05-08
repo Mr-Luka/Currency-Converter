@@ -1,5 +1,8 @@
 const fromSelect = document.querySelector('[name="from_currency"]');
+const fromInput = document.querySelector('[name="from_amount"]');
 const toSelect = document.querySelector('[name="to_currency"]');
+const toEl = document.querySelector('[name="to_amount"]');
+const form = document.querySelector('.app form');
 const endpoint = `https://open.er-api.com/v6/latest`;
 const ratesByBase = {};
 
@@ -72,7 +75,14 @@ async function convert(amount, from, to) {
     return convertedAmount;
 }
 
+async function handleInput(e) {
+    const rawAmount = await convert(fromInput.value, fromSelect.value, toSelect.value);
+    console.log(rawAmount)
+}
+
 const optionsHTML = generateOptions(currencies);
 // Populate the options elements
 fromSelect.innerHTML = optionsHTML;
 toSelect.innerHTML= optionsHTML;
+
+form.addEventListener("input", handleInput);
